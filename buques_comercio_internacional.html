@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buques en el Comercio Internacional</title>
+    <meta name="description"
+        content="Guía interactiva de los tipos de buques utilizados en el comercio internacional de mercancías, con imágenes realistas y detalles técnicos.">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #07090f;
+            --bg-card: #121824;
+            --bg-card-hover: #182030;
+            --primary: #3b82f6;
+            --primary-glow: rgba(59, 130, 246, 0.4);
+            --accent: #0ea5e9;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --danger: #ef4444;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(14, 165, 233, 0.08) 0%, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 2rem;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+            background: rgba(7, 9, 15, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 10;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        header p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+
+        .ship-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ship-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+            transform: translateX(-100%);
+            transition: 0.6s transform z-index;
+        }
+
+        .ship-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--border-highlight);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px var(--primary-glow);
+            background: var(--bg-card-hover);
+        }
+
+        .ship-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .ship-card:nth-child(even) {
+            grid-template-columns: 1fr 1fr;
+            direction: rtl;
+        }
+
+        .ship-card:nth-child(even)>* {
+            direction: ltr;
+        }
+
+        .ship-image-container {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            background: #1a2235;
+            /* Fallback color */
+        }
+
+        .ship-image {
+            width: 100%;
+            height: 100%;
+            min-height: 350px;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+        }
+
+        .ship-image-container::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            pointer-events: none;
+        }
+
+        .ship-card:hover .ship-image {
+            transform: scale(1.05);
+        }
+
+        .ship-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .ship-tag {
+            display: inline-block;
+            padding: 0.35rem 1rem;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            align-self: flex-start;
+        }
+
+        .ship-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .ship-desc {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        /* Acordeón (Dropdowns) Mejorado */
+        .dropdowns {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        details {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        details[open] {
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.03);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        summary {
+            padding: 1.2rem 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            list-style: none;
+            /* Eliminar flecha por defecto */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            color: #fff;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::after {
+            content: '+';
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: var(--primary);
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::after {
+            transform: rotate(45deg);
+        }
+
+        /* Cabeceras de resúmenes específicas */
+        .summary-ventajas summary::after {
+            color: var(--success);
+        }
+
+        .summary-desventajas summary::after {
+            color: var(--danger);
+        }
+
+        .details-content {
+            padding: 0 1.5rem 1.5rem 1.5rem;
+            color: var(--text-muted);
+            animation: slideDown 0.3s ease-out;
+            font-size: 1rem;
+        }
+
+        .list-items {
+            list-style: none;
+            margin-top: 0.5rem;
+        }
+
+        .list-items li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .list-items li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--text-main);
+        }
+
+        .summary-ventajas .list-items li::before {
+            color: var(--success);
+        }
+
+        .summary-desventajas .list-items li::before {
+            color: var(--danger);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 900px) {
+
+            .ship-card,
+            .ship-card:nth-child(even) {
+                grid-template-columns: 1fr;
+                direction: ltr;
+                /* Reset direction */
+                gap: 2rem;
+            }
+
+            header h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Buques en el Comercio Internacional</h1>
+        <p>Una guía interactiva integral de los gigantes de los mares: Tipos, características, ventajas y desventajas en
+            la cadena logística global.</p>
+    </header>
+
+    <main class="container">
+
+        <!-- 1. Portacontenedores -->
+        <article class="ship-card">
+            <div class="ship-image-container">
+                <img src="./img/container_ship.png" alt="Buque Portacontenedores" class="ship-image">
+            </div>
+            <div class="ship-content">
+                <span class="ship-tag">Carga Unitarizada</span>
+                <h2 class="ship-title">Portacontenedores</h2>
+                <p class="ship-desc">
+                    El rey indiscutible del comercio marítimo mundial. Diseñado exclusivamente para transportar
+                    mercancía en contenedores estandarizados de acero (TEUs). Su diseño de celdas internas los hace
+                    extremadamente eficientes para todo tipo de productos manufacturados.
+                </p>
+                <div class="dropdowns">
+                    <details class="summary-ventajas">
+                        <summary>Ventajas</summary>
+                        <div class="details-content">
+                            <ul class="list-items">
+                                <li>Alta velocidad en los procesos de estiba y desestiba.</li>
+                                <li>Excelente multimodalidad (fácil transición a tren o camión).</li>
+                                <li>Gran protección de la mercancía contra daños y robos.</li>
+                            </ul>
+                        </div>
+                    </details>
+                    <details class="summary-desventajas">
+                        <summary>Desventajas</summary>
+                        <div class="details-content">
+                            <ul class="list-items">
+                                <li>Dependencia absoluta de terminales portuarias especializadas con grúas pórtico.</li>
+                                <li>Inflexibilidad; no son aptos para cargas voluminosas que superan las medidas
+                                    estándar.</li>
+                                <li>Necesidad de realizar altas inversiones en construcción.</li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </article>
+
+        <!-- 2. Granelero -->
+        <article class="ship-card">
+            <div class="ship-image-container">
+                <img src="./img/bulk_carrier.png" alt="Buque Granelero" class="ship-image">
+            </div>
+            <div class="ship-content">
+                <span class="ship-tag">Materias Primas</span>
+                <h2 class="ship-title">Granelero (Bulk Carrier)</h2>
+                <p class="ship-desc">
+                    Embarcaciones masivas con grandes escotillas en su cubierta. Transportan cargar sueltas y secas a
+                    granel sin empaquetar, almacenadas directamente en las bodegas. Principalmente mueven carbón, grano,
+                    mineral de hierro y áridos.
+                </p>
+                <div class="dropdowns">
+                    <details class="summary-ventajas">
+                        <summary>Ventajas</summary>
+                        <div class="details-content">
+                            <ul class="list-items">
+                                <li>Capacidad de carga inmensa, superando frecuentemente las 100,000 toneladas.</li>
+                                <li>Economías de escala significativas, proporcionando el menor coste por tonelada.</li>
+                                <li>Diseño robusto y especializado para soportar las tensiones térmicas y de peso.</li>
+                            </ul>
+                        </div>
+                    </details>
+                    <details class="summary-desventajas">
+                        <summary>Desventajas</summary>
+                        <div class="details-content">
+                            <ul class="list-items">
+                                <li>Velocidad de navegación muy lenta en comparación con otros buques.</li>
+                                <li>Riesgo físico de deslizamiento y licuefacción de cierta carga (como granos).</li>
+                                <li>Generan mucho polvo y residuos durante la carga/descarga en terminal.</li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </article>
+
+        <!-- 3. Petrolero / Tanque -->
+        <article class="ship-card">
+            <div class="ship-image-container">
+                <img src="./img/oil_tanker.png" alt="Buque Tanque" class="ship-image">
+            </div>
+            <div class="ship-content">
+                <span class="ship-tag">Petróleo y Derivados</span>
+                <h2 class="ship-title">Petrolero (Crude Carrier)</h2>
+                <p class="ship-desc">
+                    Infraestructuras flotantes enfocadas en el transporte de líquidos a granel (petróleo crudo,
+                    productos químicos o refinados). Están equipados con complejas redes de tuberías, válvulas de alivio
+                    y estaciones de bombeo de gran caudal.
+                </p>
+                <div class="dropdowns">
+                    <details class="summary-ventajas">
+                        <summary>Ventajas</summary>
+                        <div class="details-content">
+                            <ul class="list-items">
+                                <li>Indispensables para la cadena de suministro energético global.</li>
+                                <li>Flete extremadamente económico considerando los enormes volúmenes transportados por
+                                    viaje.</li>
+                                <li>Las operaciones de descarga mediante mangueras y bombas son continuas y automáticas.
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
+                    <details class="summary-desventajas">
+                        <summary>Desventajas</summary>
+                        <div class="details-content">
+                            <ul class="list-items">
+                                <li>Altísimo riesgo y desastre medioambiental en caso de accidente, fuga o naufragio.
+                                </li>
+                                <li>Operan en viajes lastrados (vacíos rellenados con agua de mar) a la vuelta de casi
+                                    cada ruta.</li>
+                                <li>Nula flexibilidad táctica para otro tipo de carga comercial.</li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </article>
+
+        <!-- 4. Gasero LNG/LPG (NUEVO) -->
+        <article class="ship-card">
+            <div class="ship-image-container">
+                <img src="./img/lng_carrier.png" alt="Buque Gasero" class="ship-image">
+            </div>
+            <div class="ship-content">
+                <span class="ship-tag">Gases Licuados</span>
+                <h2 class="ship-title">Gasero (LNG / LPG)</h2>
+                <p class="ship-desc">
+                    Embarcaciones altamente tecnológicas caracterizadas por sus enormes tanques esféricos o de membrana.
+                    Transportan Gas Natural Licuado (GNL) o Petróleo Licuado (GLP) a temperaturas extremadamente frías
+                    (-160°C) para mantener el gas en estado líquido.
+                </p>
+                <div class="dropdowns">
+                    <details class="summary-ventajas">
+                        <summary>Ventajas</summary>
+                        <div class="details-content">
+                            <ul class="list-items">
+                                <li>Permite comerciar un recurso energético vital de forma intercontinental (sin
+                                    depender de gasoductos).</li>
+                                <li>Alta tecnología y eficiencia: Muchos barcos utilizan parte del gas evaporado para
+                                    sus propios motores.</li>
+                            </ul>
+                        </div>
+                    </details>
+                    <details class="summary-desventajas">
+                        <summary>Desventajas</summary>
+                        <div class="details-content">
+                            <ul class="list-items">
+                                <li>Son las naves más caras y complejas de construir del mundo tras los militares.</li>
+                                <li>Peligrosidad extrema debido a la inflamabilidad del gas en caso de brecha.</li>
+                                <li>Dependen de terminales de licuefacción y regasificación que valen miles de millones.
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </article>
+
+        <!-- 5. Ro-Ro -->
+        <article class="ship-card">
+            <div class="ship-image-container">
+                <img src="./img/roro_ship.png" alt="Buque Ro-Ro" class="ship-image">
+            </div>
+            <div class="ship-content">
+                <span class="ship-tag">Carga Rodada</span>
+                <h2 class="ship-title">Ro-Ro (Roll-on/Roll-off)</h2>
+                <p class="ship-desc">
+                    Reconocidos por su aspecto de "garaje flotante". Poseen rampas permitiendo que la carga (camiones,
+                    turismos nuevos de fábrica, maquinaria pesada agrícola) se embarque y desembarque rodando por sus
+                    propios medios al interior de sus múltiples cubiertas.
+                </p>
+                <div class="dropdowns">
+                    <details class="summary-ventajas">
+                        <summary>Ventajas</summary>
+                        <div class="details-content">
+                            <ul class="list-items">
+                                <li>Tiempos récord en estiba; máxima agilidad operativa siendo independientes de grúas.
+                                </li>
+                                <li>Integración perfecta "puerta a puerta" (los remolques completan rutas marítimas sin
+                                    desembalar).</li>
+                            </ul>
+                        </div>
+                    </details>
+                    <details class="summary-desventajas">
+                        <summary>Desventajas</summary>
+                        <div class="details-content">
+                            <ul class="list-items">
+                                <li>Pobre aprovechamiento del espacio (mucho "aire" transportado entre vehículos).</li>
+                                <li>Falta de mamparos transversales por diseño, lo que en caso de inundación genera
+                                    hundimientos muy veloces.</li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </article>
+
+        <!-- 6. Frigorífico -->
+        <article class="ship-card">
+            <div class="ship-image-container">
+                <img src="./img/reefer_ship.png" alt="Buque Frigorífico" class="ship-image">
+            </div>
+            <div class="ship-content">
+                <span class="ship-tag">Carga Perecedera</span>
+                <h2 class="ship-title">Frigorífico (Reefer Vessel)</h2>
+                <p class="ship-desc">
+                    Enfocados al transporte de alimentación que requiere temperaturas bajo cero o refrigeración estricta
+                    (pescado, carnes, plátanos, fármacos). Su casco se suele pintar completamente de blanco para
+                    reflejar el sol y limitar el sobrecalentamiento de las cubiertas.
+                </p>
+                <div class="dropdowns">
+                    <details class="summary-ventajas">
+                        <summary>Ventajas</summary>
+                        <div class="details-content">
+                            <ul class="list-items">
+                                <li>Velocidades de crucero muy altas para garantizar que frutas o pescados lleguen
+                                    frescos al mercado global.</li>
+                                <li>Control exacto de humedad relativa para no estropear cosechas vivas.</li>
+                            </ul>
+                        </div>
+                    </details>
+                    <details class="summary-desventajas">
+                        <summary>Desventajas</summary>
+                        <div class="details-content">
+                            <ul class="list-items">
+                                <li>Fuerte declive de uso debido al auge de los "Reefer Containers" (contenedores
+                                    frigoríficos) en barcos convencionales.</li>
+                                <li>Requieren equipos de apoyo continuo y consumen un tremendo exceso de diésel para
+                                    enfriar las bodegas.</li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </article>
+
+        <!-- 7. Buque Ganadero (NUEVO) -->
+        <article class="ship-card">
+            <div class="ship-image-container">
+                <img src="./img/livestock_carrier.png" alt="Buque Ganadero" class="ship-image">
+            </div>
+            <div class="ship-content">
+                <span class="ship-tag">Animales Vivos</span>
+                <h2 class="ship-title">Buque Ganadero (Livestock)</h2>
+                <p class="ship-desc">
+                    Barcos adaptados con múltiples pisos descubiertos u semi-cerrados, diseñados para el transporte de
+                    grandes cantidades de animales vivos (principalmente ganado ovino y bovino). Incorporan sistemas
+                    masivos de ventilación para asegurar la salud de los animales durante largas travesías oceánicas.
+                </p>
+                <div class="dropdowns">
+                    <details class="summary-ventajas">
+                        <summary>Ventajas</summary>
+                        <div class="details-content">
+                            <ul class="list-items">
+                                <li>Permite la exportación de carne "en pie" hacia países con requerimientos de
+                                    sacrificio particular (ej. sacrificio Halal).</li>
+                                <li>Equipados con sistemas completos de provisión de agua dulce (desaladoras) y
+                                    plataformas de alimentación automatizadas a bordo.</li>
+                            </ul>
+                        </div>
+                    </details>
+                    <details class="summary-desventajas">
+                        <summary>Desventajas</summary>
+                        <div class="details-content">
+                            <ul class="list-items">
+                                <li>Enorme presión regulatoria y ética respecto a los estándares de bienestar y estrés
+                                    animal.</li>
+                                <li>Fragilidad sanitaria: Cualquier brote de enfermedad requiere sacrificio preventivo a
+                                    bordo o la denegación de desembarque.</li>
+                                <li>Los fuertes olores pueden afectar las rutas colindantes y a la tripulación local.
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </article>
+
+        <!-- 8. Heavy Lift / Cargas Proyecto (NUEVO) -->
+        <article class="ship-card">
+            <div class="ship-image-container">
+                <img src="./img/heavy_lift.png" alt="Buque Cargas Pesadas" class="ship-image">
+            </div>
+            <div class="ship-content">
+                <span class="ship-tag">Cargas Proyecto</span>
+                <h2 class="ship-title">Heavy Lift Vessel</h2>
+                <p class="ship-desc">
+                    Diseñados para trasladar componentes industriales extremadamente grandes y masivos que no caben en
+                    ningún otro barco. Son los encargados de transportar reactores nucleares, yates gigantes,
+                    plataformas petroleras o incluso motores de otros barcos. A menudo son semisumergibles.
+                </p>
+                <div class="dropdowns">
+                    <details class="summary-ventajas">
+                        <summary>Ventajas</summary>
+                        <div class="details-content">
+                            <ul class="list-items">
+                                <li>Capacidad inigualable para la ingeniería y construcción de megaproyectos
+                                    internacionales.</li>
+                                <li>Muchos sumergen su casco permitiendo que la carga flote hasta estar situada encima
+                                    ("Float-on / Float-off").</li>
+                            </ul>
+                        </div>
+                    </details>
+                    <details class="summary-desventajas">
+                        <summary>Desventajas</summary>
+                        <div class="details-content">
+                            <ul class="list-items">
+                                <li>Mercado logístico de nicho muy pequeño con operaciones que tardan meses en ser
+                                    estudiadas matemáticamente.</li>
+                                <li>Velocidad muy baja y extrema vulnerabilidad al mal clima (huracanes, tormentas
+                                    atlánticas) debido a la alta exposición de la carga superior.</li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </article>
+
+        <!-- 9. Carga General -->
+        <article class="ship-card">
+            <div class="ship-image-container">
+                <img src="./img/general_cargo.png" alt="Buque de Carga General" class="ship-image">
+            </div>
+            <div class="ship-content">
+                <span class="ship-tag">Carga Multipropósito</span>
+                <h2 class="ship-title">Carga General (General Cargo)</h2>
+                <p class="ship-desc">
+                    El "todoterreno" originario de los mares. Transportan todo aquello irregular que resulta
+                    antieconómico contenerizar. Llevan carga fraccionada (Break Bulk) como bobinas de acero, componentes
+                    eólicos o sacos, y están siempre dotados de sus propias grúas operativas en cubierta.
+                </p>
+                <div class="dropdowns">
+                    <details class="summary-ventajas">
+                        <summary>Ventajas</summary>
+                        <div class="details-content">
+                            <ul class="list-items">
+                                <li>Autonomía inigualable: al tener sus propias grúas de gran tonelaje, operan en
+                                    puertos remotos del tercer mundo sin infraestructura avanzada.</li>
+                                <li>Extrema flexibilidad de espacios para alojar diversas cargas atípicas en un solo
+                                    viaje.</li>
+                            </ul>
+                        </div>
+                    </details>
+                    <details class="summary-desventajas">
+                        <summary>Desventajas</summary>
+                        <div class="details-content">
+                            <ul class="list-items">
+                                <li>Procesos de carga laboriosos, lentos y fuertemente manuales ("carga unitaria"),
+                                    encareciendo la estiba portuaria en occidente.</li>
+                                <li>Tendencia a la obsolescencia frente a la eficiencia del portacontenedores global.
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </article>
+
+    </main>
+
+    <script>
+        document.querySelectorAll('details').forEach((detail) => {
+            detail.addEventListener('toggle', (e) => {
+                // Pequeña interactividad para la versión de este snippet
+                if (detail.open) {
+                    // console.log("Sección abierta");
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
